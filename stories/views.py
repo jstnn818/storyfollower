@@ -27,3 +27,9 @@ def add_story(request):
         'form': form,
         'submitted': submitted,
     })
+
+def story_page(request, story_id):
+    story = Story.objects.get(pk=story_id)
+    return render(request, "stories/story_page.html", {
+        'story': story,
+    })
