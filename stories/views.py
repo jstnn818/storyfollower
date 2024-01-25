@@ -33,3 +33,12 @@ def story_page(request, story_id):
     return render(request, "stories/story_page.html", {
         'story': story,
     })
+    
+def search_stories(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        story_list = Story.objects.filter(title__contains=searched)
+    return render(request, "stories/search_stories.html", {
+        'searched': searched,
+        'story_list': story_list,
+    })

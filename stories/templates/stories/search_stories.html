@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2> Results for... </h2>
+{% if searched %}
+    <p class="fs-3"> {{ searched }} </p>
+    {% if story_list %}
+        {% include "item_list.html" with item_list=story_list item_page='story-page'%}
+    {% else %}
+        <div class="alert alert-warning fade show" role="alert"> No results. </div>
+    {% endif %}
+{% else %}
+    <div class="alert alert-warning fade show" role="alert"> No results. </div>
+{% endif %}
+
+{% endblock %}
