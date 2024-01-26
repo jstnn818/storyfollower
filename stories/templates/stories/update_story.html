@@ -6,7 +6,8 @@
 <form action="" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Update" class="btn btn-secondary">
+    <input type="submit" value="Update" class="btn btn-outline-secondary btn-sm">
+    <a href="{% url 'delete-story' story.id %}" class="btn btn-outline-danger btn-sm"> Delete </a>
 </form>
 
 

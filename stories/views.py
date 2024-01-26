@@ -45,6 +45,12 @@ def update_story(request, story_id):
         'form': form,
     })
 
+@login_required
+def delete_story(request, story_id):
+    story = Story.objects.get(pk=story_id) 
+    story.delete()
+    return redirect('story-list-all')
+
 def story_page(request, story_id):
     story = Story.objects.get(pk=story_id)
     return render(request, "stories/story_page.html", {
