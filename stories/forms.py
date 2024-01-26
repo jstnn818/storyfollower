@@ -16,5 +16,5 @@ class StoryForm(ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
             'author': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Author'}),
-            'description': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Description'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
         }

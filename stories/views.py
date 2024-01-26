@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from .models import Story
 from .forms import StoryForm
 
@@ -11,13 +13,16 @@ def story_list_all(request):
     return render(request, "stories/story_list.html", {
         'story_list': story_list,
     })
-    
+
+@login_required
 def add_story(request):
     submitted = False
     if request.method == "POST":
         form = StoryForm(request.POST)
         if form.is_valid():
-            form.save()
+            story = form.save(commit=False)
+            story.owner = request.user
+            story.save()
             return HttpResponseRedirect('add_story?submitted=True')
     else:
         form = StoryForm
@@ -28,6 +33,7 @@ def add_story(request):
         'submitted': submitted,
     })
 
+@login_required
 def update_story(request, story_id):
     story = Story.objects.get(pk=story_id)
     form = StoryForm(request.POST or None, instance=story)
