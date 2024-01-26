@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from .models import Story
 from .forms import StoryForm
@@ -26,6 +26,17 @@ def add_story(request):
     return render(request, "stories/add_story.html", {
         'form': form,
         'submitted': submitted,
+    })
+
+def update_story(request, story_id):
+    story = Story.objects.get(pk=story_id)
+    form = StoryForm(request.POST or None, instance=story)
+    if form.is_valid():
+            form.save()
+            return redirect('story-page', story_id=story.id)
+    return render(request, "stories/update_story.html", {
+        'story': story,
+        'form': form,
     })
 
 def story_page(request, story_id):
