@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import Story
@@ -44,6 +44,18 @@ def update_story(request, story_id):
     return render(request, "stories/update_story.html", {
         'story': story,
         'form': form,
+    })
+    
+@login_required
+def update_notes(request, story_id):
+    story = Story.objects.get(pk=story_id)
+    if request.method == 'POST':
+        notes = request.POST.get('content')
+        print(notes)
+        story.notes = notes
+        story.save()
+    return render(request, "stories/story_page.html", {
+        'story': story,
     })
 
 @login_required
