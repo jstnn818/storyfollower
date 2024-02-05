@@ -59,6 +59,15 @@ def update_notes(request, story_id):
     })
 
 @login_required
+def download_notes(request, story_id):
+    story = Story.objects.get(pk=story_id) 
+    response = HttpResponse(content_type="text/plain")
+    response['Content-Disposition'] = f"attachment; filename={story.title} - Notes.txt"
+    lines = [f"=={story.title}==\n\n{story.notes}"]
+    response.writelines(lines)
+    return response
+
+@login_required
 def delete_story(request, story_id):
     story = Story.objects.get(pk=story_id) 
     story.delete()

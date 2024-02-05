@@ -15,6 +15,7 @@
       <div class="card-body">
         <h5 class="card-title">{{ story.title }}</h5>
         <p class="card-text">{{ story.author }}</p> 
+        <p class="card-text">{{ story.description }}</p>
       </div>
     </div>
     <div class="col-md-4 p-2 text-end">
@@ -39,8 +40,6 @@
     </div>
     <div class="card-body">
       <h5 class="card-title"> Notes </h5>
-      <p class="card-text">{{ story.description }}</p>
-
       <h6> Editing... </h6>
       <form id="notes-form" action="" method="post" endpoint="{% url 'update-notes' story.id %}">
         {% csrf_token %}
@@ -48,6 +47,7 @@
         <br><br>
          <button type="submit" class="btn-submit" value="Save"> Save </button>
       </form>
+      <a class="button" href="{% url 'download-notes' story.id %}"> Download </a>
 
     </div>
   </div>
