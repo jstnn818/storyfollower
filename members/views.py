@@ -40,3 +40,8 @@ def register_user(request):
     return render(request, "authenticate/register.html", {
         'form': form,
     })
+    
+def access_denied(request, owner_name):
+    return render(request, "authenticate/access_denied.html", {
+        'owner': owner_name,
+    })

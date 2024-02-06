@@ -37,47 +37,63 @@ def add_story(request):
 @login_required
 def update_story(request, story_id):
     story = Story.objects.get(pk=story_id)
-    form = StoryForm(request.POST or None, instance=story)
-    if form.is_valid():
-            form.save()
-            return redirect('story-page', story_id=story.id)
-    return render(request, "stories/update_story.html", {
-        'story': story,
-        'form': form,
-    })
+    if request.user == story.owner:
+        form = StoryForm(request.POST or None, instance=story)
+        if form.is_valid():
+                form.save()
+                return redirect('story-page', story_id=story.id)
+        return render(request, "stories/update_story.html", {
+            'story': story,
+            'form': form,
+        })
+    else:
+        return redirect('members:access-denied', owner_name=story.owner.username)
     
 @login_required
 def update_notes(request, story_id):
     story = Story.objects.get(pk=story_id)
-    if request.method == 'POST':
-        notes = request.POST.get('content')
-        print(notes)
-        story.notes = notes
-        story.save()
-    return render(request, "stories/story_page.html", {
-        'story': story,
-    })
+    if request.user == story.owner:
+        if request.method == 'POST':
+            notes = request.POST.get('content')
+            print(notes)
+            story.notes = notes
+            story.save()
+        return render(request, "stories/story_page.html", {
+            'story': story,
+        })
+    else:
+        return redirect('members:access-denied', owner_name=story.owner.username)
 
 @login_required
 def download_notes(request, story_id):
-    story = Story.objects.get(pk=story_id) 
-    response = HttpResponse(content_type="text/plain")
-    response['Content-Disposition'] = f"attachment; filename={story.title} - Notes.txt"
-    lines = [f"=={story.title}==\n\n{story.notes}"]
-    response.writelines(lines)
-    return response
+    story = Story.objects.get(pk=story_id)
+    if request.user == story.owner:
+        response = HttpResponse(content_type="text/plain")
+        response['Content-Disposition'] = f"attachment; filename={story.title} - Notes.txt"
+        lines = [f"=={story.title}==\n\n{story.notes}"]
+        response.writelines(lines)
+        return response
+    else:
+        return redirect('members:access-denied', owner_name=story.owner.username)
 
 @login_required
 def delete_story(request, story_id):
-    story = Story.objects.get(pk=story_id) 
-    story.delete()
-    return redirect('story-list-all')
+    if request.user == story.owner:
+        story = Story.objects.get(pk=story_id) 
+        story.delete()
+        return redirect('story-list-all')
+    else:
+        return redirect('members:access-denied', owner_name=story.owner.username)
 
+@login_required
 def story_page(request, story_id):
     story = Story.objects.get(pk=story_id)
-    return render(request, "stories/story_page.html", {
-        'story': story,
-    })
+    if request.user == story.owner:
+        return render(request, "stories/story_page.html", {
+            'story': story,
+        })
+    else:
+        return redirect('members:access-denied', owner_name=story.owner.username)
     
 def search_stories(request):
     if request.method == "POST":
