@@ -48,7 +48,7 @@ def update_story(request, story_id):
             'form': form,
         })
     else:
-        return redirect('members:access-denied', owner_name=story.owner.username)
+        return redirect('members:access-denied', owner_id=story.owner.id)
     
 @login_required
 def update_notes(request, story_id):
@@ -63,7 +63,7 @@ def update_notes(request, story_id):
             'story': story,
         })
     else:
-        return redirect('members:access-denied', owner_name=story.owner.username)
+        return redirect('members:access-denied', owner_id=story.owner.id)
 
 @login_required
 def download_notes(request, story_id):
@@ -75,16 +75,16 @@ def download_notes(request, story_id):
         response.writelines(lines)
         return response
     else:
-        return redirect('members:access-denied', owner_name=story.owner.username)
+        return redirect('members:access-denied', owner_id=story.owner.id)
 
 @login_required
 def delete_story(request, story_id):
+    story = Story.objects.get(pk=story_id) 
     if request.user == story.owner:
-        story = Story.objects.get(pk=story_id) 
         story.delete()
         return redirect('story-list-all')
     else:
-        return redirect('members:access-denied', owner_name=story.owner.username)
+        return redirect('members:access-denied', owner_id=story.owner.id)
 
 @login_required
 def story_page(request, story_id):
@@ -94,7 +94,7 @@ def story_page(request, story_id):
             'story': story,
         })
     else:
-        return redirect('members:access-denied', owner_name=story.owner.username)
+        return redirect('members:access-denied', owner_id=story.owner.id)
 
 @login_required
 def search_stories(request):

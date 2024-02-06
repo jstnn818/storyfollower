@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from .forms import RegisterUserForm
 
 def login_user(request):
@@ -41,7 +42,8 @@ def register_user(request):
         'form': form,
     })
     
-def access_denied(request, owner_name):
+def access_denied(request, owner_id):
+    owner = User.objects.get(pk=owner_id)
     return render(request, "authenticate/access_denied.html", {
-        'owner': owner_name,
+        'owner': owner,
     })
