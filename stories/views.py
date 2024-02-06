@@ -8,9 +8,10 @@ from .forms import StoryForm
 def home(request):
     return render(request, "stories/home.html", {})
 
+@login_required
 def story_list_all(request):
-    sort = request.GET.get('sort','title')
-    story_list = Story.objects.all().order_by(sort)
+    sort = request.GET.get('sort', 'title')
+    story_list = Story.objects.filter(owner=request.user.id).order_by(sort)
     return render(request, "stories/story_list.html", {
         'story_list': story_list,
     })
@@ -94,11 +95,12 @@ def story_page(request, story_id):
         })
     else:
         return redirect('members:access-denied', owner_name=story.owner.username)
-    
+
+@login_required
 def search_stories(request):
     if request.method == "POST":
         searched = request.POST['searched']
-        story_list = Story.objects.filter(title__contains=searched)
+        story_list = Story.objects.filter(owner=request.user.id).filter(title__contains=searched)
     return render(request, "stories/search_stories.html", {
         'searched': searched,
         'story_list': story_list,

@@ -14,14 +14,14 @@ def login_user(request):
             return redirect("home")
         else:
             messages.success(request, ("There was an error logging in"))
-            return redirect("login")
+            return redirect("members:login")
     else:
         return render(request, "authenticate/login.html", {})
     
 def logout_user(request):
     logout(request)
     messages.success(request, ("Logout successful"))
-    return redirect("login")
+    return redirect("members:login")
 
 def register_user(request):
     if request.method == "POST":
