@@ -5,12 +5,14 @@ from .models import Story
 class StoryForm(ModelForm):
     class Meta:
         model = Story
-        fields = ('title', 'author', 'description')
+        fields = ('title', 'author', 'description', 'cover', 'banner')
         
         labels = {
             'title': '',
             'author': '',
             'description': '',
+            'cover': '',
+            'banner': '',
         }
         
         widgets = {

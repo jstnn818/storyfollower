@@ -9,7 +9,9 @@ class Story(models.Model):
     owner = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     description = models.TextField(blank=True)
     notes = models.TextField(blank=True)
-    # Map, Characters(?), Cover Image
+    cover = models.ImageField(null=True, blank=True, upload_to="images/")
+    banner = models.ImageField(null=True, blank=True, upload_to="images/")
+    # Map, Characters(?)
     
     def __str__(self):
         return self.title
