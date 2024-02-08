@@ -11,8 +11,6 @@ class StoryForm(ModelForm):
             'title': '',
             'author': '',
             'description': '',
-            'cover': '',
-            'banner': '',
         }
         
         widgets = {

@@ -12,6 +12,13 @@ class Story(models.Model):
     cover = models.ImageField(null=True, blank=True, upload_to="images/")
     banner = models.ImageField(null=True, blank=True, upload_to="images/")
     # Map, Characters(?)
+    date_accessed = models.DateTimeField(auto_now=True)
+
+    @classmethod
+    def from_db(cls, db, field_names, values):
+        obj = super().from_db(db, field_names, values)
+        obj.save()
+        return obj
     
     def __str__(self):
         return self.title

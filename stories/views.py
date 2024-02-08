@@ -5,8 +5,21 @@ from django.contrib.auth.decorators import login_required
 from .models import Story
 from .forms import StoryForm
 
+@login_required
 def home(request):
-    return render(request, "stories/home.html", {})
+    story_sort = request.GET.get('sort', 'title')
+    story_list = Story.objects.filter(owner=request.user.id).order_by(story_sort)
+    
+    # Not updating correctly
+    recent_sort = request.GET.get('sort', '-date_accessed')
+    recent_list = Story.objects.filter(owner=request.user.id).order_by(recent_sort)
+    
+    return render(request, "stories/home.html", {
+        'user': request.user,
+        'recent_list': recent_list[:4],
+        'story_list': story_list[:8],
+        'story_list_length': len(story_list)
+    })
 
 @login_required
 def story_list_all(request):
