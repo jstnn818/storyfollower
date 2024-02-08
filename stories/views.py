@@ -39,7 +39,7 @@ def add_story(request):
 def update_story(request, story_id):
     story = Story.objects.get(pk=story_id)
     if request.user == story.owner:
-        form = StoryForm(request.POST or None, instance=story)
+        form = StoryForm(request.POST or None, request.FILES or None, instance=story)
         if form.is_valid():
                 form.save()
                 return redirect('story-page', story_id=story.id)
