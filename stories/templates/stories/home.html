@@ -1,38 +1,53 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %} Home {% endblock %}
 {% block content %}
 
 <h2> Welcome back, {{ user.username }}</h2>
 <br>
-<h4> Recently Accessed </h4>
-<div class="row row-cols-1 row-cols-md-4 g-5">
-{% for story in recent_list %}
-    <div class="col">
-        <div class="card h-100" style="width: 18rem;">
-            {% if story.cover %}
-                <img src="{{ story.cover.url }}" width="100%" height="180">
-            {% else %}
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em"></text></svg>
-            {% endif %}
-            <div class="card-body">
-                <h5 class="card-title">{{ story.title }}</h5>
-                <h6 class="card-subtitle mb-2 text-body-secondary">{{ story.author }}</h6>
-                <p class="card-text">{{ story.description }}</p>
-                <a href="{% url 'story-page' story.id %}" class="btn btn-primary"> View </a>
+{% if story_list %}
+    <h4> Recently Accessed </h4>
+    <div class="row row-cols-1 row-cols-md-4 g-5">
+    {% for story in recent_list %}
+        <div class="col">
+            <div class="card h-100" style="width: 18rem;">
+                {% if story.cover %}
+                    <img src="{{ story.cover.url }}" width="100%" height="180">
+                {% else %}
+                    <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em"></text></svg>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ story.title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">{{ story.author }}</h6>
+                    <p class="card-text">{{ story.description }}</p>
+                    <a href="{% url 'story-page' story.id %}" class="btn btn-primary"> View </a>
+                </div>
             </div>
         </div>
+    {% endfor %}
     </div>
-{% endfor %}
-</div>
-<br><br>
-<h4> My Stories </h4>
-{% include "item_list.html" with item_list=story_list item_page='story-page'%}
-
-{% if story_list_length > 8 %}
-    <br>
-    <div class="text-center">
-        <a href="{% url 'story-list-all' %}" class="btn btn-primary" > See All </a>
-    </div>
+    <br><br>
 {% endif %}
+<h4> My Stories </h4>
+{% if story_list %}
+    {% include "item_list.html" with item_list=story_list item_page='story-page'%}
+    {% if story_list_length > 8 %}
+        <br>
+        <div class="text-center">
+            <a href="{% url 'story-list-all' %}" class="btn btn-primary" > See All </a>
+        </div>
+    {% endif %}
+{% else %}
+    <div class="row row-cols-1 row-cols-md-4 g-5">
+        <div class="col">
+            <a href="{% url 'add-story' %}" class="btn btn-light d-flex align-items-center justify-content-center border border-dark border-3" style="width: 18rem; height: 360px;">
+                <div>
+                    <h2> Add Story </h2>
+                    <img src="{% static 'add_icon.png' %}" alt="Add Icon" width="40" height="40" class="me-2">
+                </div>
+            </a>
+        </div>
+    </div>
 
+{% endif %}
 {% endblock %}
