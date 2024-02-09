@@ -1,10 +1,18 @@
 {% extends "base.html" %}
 
 {% block title %} Login {% endblock %}
+{% block head %}
+  <style>
+    body {
+      background-color: #f0f0f0;
+    }
+  </style>
+{% endblock %}
 
 {% block content %}
+<div class="d-flex align-items-center justify-content-center">
+  <div class="shadow p-4 mb-5 bg-body rounded align-middle">
 
-<div class="shadow p-4 mb-5 bg-body rounded">
   {% if form.errors %}
   <div class="alert alert-warning alert-dismissible fade show" role="alert">
       There was an error with your form.
@@ -12,16 +20,24 @@
   </div>
   {% endif %}
 
-  <h2> Register </h2>
-  <form action="{% url 'members:register' %}" method="post">
+  <h2 class="text-center"> Register </h2>
+  <style>
+    form p {
+      margin-bottom: 8px;
+      margin-top: 5px;
+    }
+  </style>
+  <form action="{% url 'members:register' %}" method="post" style>
     {% csrf_token %}
       {{ form.as_p }}
       <div class="col text-center">
         <button type="submit" class="btn btn-primary">Submit</button>
       </div>
   </form>
-  <div class="col text-center">
-    <a href="{% url 'members:login' %}"> Already have an account? Login! </a>
+  <div class="col text-center mt-1">
+    Already have an account?
+    <a href="{% url 'members:login' %}"> Login </a>
+  </div>
   </div>
 </div>
 {% endblock %}

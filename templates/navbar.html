@@ -28,20 +28,13 @@
     </div>
   </div>
   <div class="dropdown mx-3 position-relative">
-    {% if user.is_authenticated %}
-      <a class="btn btn-secondary dropdown-toggle d-flex align-items-center" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="{% static 'user_icon.png' %}" alt="User Icon" width="30" height="30" class="me-2">
-        {{ user.username }}
-      </a>
-      <ul class="dropdown-menu dropdown-menu-dark position-absolute" style="left: 0;">
-        <li><a class="dropdown-item" href="{% url 'members:logout' %}"> Logout </a></li>
-      </ul>
-    {% else %}
-      <a href="{% url 'members:login' %}" class="btn btn-secondary d-flex align-items-center">
-          <img src="{% static 'user_icon.png' %}" alt="User Icon" width="30" height="30" class="me-2">
-          Login
-      </a>
-    {% endif %}
+    <a class="btn btn-secondary dropdown-toggle d-flex align-items-center" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+      <img src="{% static 'user_icon.png' %}" alt="User Icon" width="30" height="30" class="me-2">
+      {{ user.username }}
+    </a>
+    <ul class="dropdown-menu dropdown-menu-dark position-absolute" style="left: 0;">
+      <li><a class="dropdown-item" href="{% url 'members:logout' %}"> Logout </a></li>
+    </ul>
   </div>
 </nav>
 
