@@ -8,6 +8,8 @@ StoryNotes utilizes the Django Framework for the Backend, while rendering HTML T
 
 In order to start this application, ensure that you are in the root folder, then run `python manage.py runserver`. A user may need to use the command `python3 manage.py runserver`, depending on their python installation.
 
+Upon cloning this repo, please ensure that `python manage.py migrate` is run to create your personal databse for this Web-App.
+
 ## Web-App Features
 
 WIP
